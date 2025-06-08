@@ -1,0 +1,105 @@
+<h4 class="mt-4 mb-3">Employee list</h4>
+
+<!-- Search and Filter -->
+<div class="row mb-3">
+  <div class="col-md-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="User Search">
+      <button class="btn btn-outline-secondary" type="button">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="input-group">
+      <button class="btn btn-outline-secondary" type="button"><i class="bi bi-filter"></i> Filter By</button>
+      <select class="form-select">
+        <option selected>Name</option>
+        <option>Date of birth</option>
+        <option>Department</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="table-responsive">
+  <table class="table table-bordered align-middle">
+    <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Date of birth</th>
+      <th>Address</th>
+      <th>Phone number</th>
+      <th>Department</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="employeeTable">
+    <tr>
+      <th scope="row">1</th>
+      <th>Nguyen Van Vinh</th>
+      <th>234234</th>
+      <th>Address</th>
+      <th>Phone number</th>
+      <th>Department</th>
+      <th>Action</th>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<nav>
+  <ul class="pagination" id="pagination"></ul>
+</nav>
+
+<script>
+  const rowsPerPage = 10;
+  const table = document.querySelector("#employeeTable");
+  const rows = Array.from(table.querySelectorAll("tr"));
+  const pagination = document.querySelector("#pagination");
+
+  function showPage(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    rows.forEach((row, index) => {
+      row.style.display = (index >= start && index < end) ? "" : "none";
+    });
+
+    pagination.innerHTML = "";
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    const prev = document.createElement("li");
+    prev.className = "page-item" + (page === 1 ? " disabled" : "");
+    prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+    prev.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (page > 1) showPage(page - 1);
+    });
+    pagination.appendChild(prev);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement("li");
+      li.className = "page-item" + (i === page ? " active" : "");
+      li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+      li.addEventListener("click", function (e) {
+        e.preventDefault();
+        showPage(i);
+      });
+      pagination.appendChild(li);
+    }
+
+    const next = document.createElement("li");
+    next.className = "page-item" + (page === totalPages ? " disabled" : "");
+    next.innerHTML = `<a class="page-link" href="#">Next</a>`;
+    next.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (page < totalPages) showPage(page + 1);
+    });
+    pagination.appendChild(next);
+  }
+
+  showPage(1);
+</script>
