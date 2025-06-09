@@ -19,6 +19,14 @@ public class AccountController {
         return "login";
     }
 
+    @GetMapping("/dashboard-content")
+    public String dashboardContent() {
+        return "dashboard-content";
+    }
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
+    }
     @PostMapping("/login")
     public String login(@RequestParam String account,
                         @RequestParam String password,
@@ -33,23 +41,15 @@ public class AccountController {
             return "login";
         }
     }
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
-    }
-    @GetMapping("/employees")
-    public String showEmployeeList(HttpSession session, Model model) {
-        AccountEntity account = (AccountEntity) session.getAttribute("loggedInUser");
-        if (account != null) {
-            return "employee-list"; // dummy view
-        }
-        model.addAttribute("loggedInUser", account);
-        return "employee-list";
+
+    @GetMapping("/dashboard/list")
+    public String listEmployee() {
+        return "list"; // Trả về templates/list.html
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
+    @GetMapping("/dashboard/add")
+    public String addEmployee() {
+        return "add"; // Trả về templates/add.html
     }
+
 }
